@@ -18,23 +18,26 @@
 
 enum planck_layers {
   _QWERTY,
+  _GAME,
+  _MOVE,
   _LOWER,
   _RAISE,
-  _MOVE,
   _ADJUST
 };
 
 enum planck_keycodes {
   TD_LSHIFT_CAPS = 1,
-  TD_RSHIFT_CAPS = 0
+  TD_RSHIFT_CAPS = 2,
+  QWERTY = 3,
+  GAME = 4
 };
 
 #define LOW_BSPC LT(_LOWER, KC_BSPC)
 #define RAI_ENT LT(_RAISE, KC_ENT)
+#define GAME MO(_GAME)
 #define MOVE MO(_MOVE)
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Shift, twice for Caps Lock
     [TD_LSHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSHIFT, KC_CAPS),
     [TD_RSHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_RSHIFT, KC_CAPS)
 };
@@ -55,8 +58,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * - Ctrl when held, Esc when tapped
     * - Lower when held, Bksp when tapped
     * - Raise when held, Enter when tapped
-    * - Del = Shift + Bksp
-    * - Ctrl + Alt + Bksp = Ctrl + Alt + Del
     * - Shift + Shift = Caps On/Off
     */
     [_QWERTY] = LAYOUT_planck_grid(
@@ -102,11 +103,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
+    /* Game
+     * ,-----------------------------------------------------------------------------------.
+     * |      |      |      |      |      |      |      |      |      |      |      |      |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | ESC  |      |      |      |      |      |      |      |      |      |      |      |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * |      |      |      |      |      |      |      |      |      |      |      |      |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | CTRL |      |      |      |      |             |      |      |      |      |      |
+     * `-----------------------------------------------------------------------------------'
+     */
+    [_GAME] = LAYOUT_planck_grid(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        KC_ESC,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        KC_LCTL, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
+
     /* Move
     * ,-----------------------------------------------------------------------------------.
-    * |      |      | PgUp |PgDown|      |      |      |      |      |      |      |      |
+    * |      |      |      |      |      |      |      |      |      |      |      |      |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
-    * |      |      | Home | End  |Shift |      |      | Left | Down |  Up  |Right |      |
+    * |      |      |      |      |Shift |      |      | Left | Down |  Up  |Right |      |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
     * |      |      |      |      |      |      |      |      |      |      |      |      |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -115,14 +134,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     */
     [_MOVE] = LAYOUT_planck_grid(
         _______, _______, KC_PGUP, KC_PGDN, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, KC_HOME, KC_END , KC_LSFT, _______,_______,  KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,_______,
+        _______, _______, KC_HOME, KC_END , KC_LSFT, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,_______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
     /* Adjust (Lower + Raise)
     * ,-----------------------------------------------------------------------------------.
-    * |      |RESET |      |      |      |      |      |      |      |      |      |      |
+    * |      |RESET |      |      |      |QWERTY| GAME |      |      |      |      |      |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
     * |      |      |      |MS B1 |MS B2 |      |      | MS L | MS D | MS U | MS R |      |
     * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -132,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * `-----------------------------------------------------------------------------------'
     */
     [_ADJUST] = LAYOUT_planck_grid(
-        _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, RESET,   _______, _______, _______, QWERTY,  GAME,    _______, _______, _______, _______, _______,
         _______, _______, _______, KC_BTN1, KC_BTN2, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
@@ -195,3 +214,22 @@ uint32_t layer_state_set_user(uint32_t state) {
 //     }
 //     return true;
 // };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case QWERTY:
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_QWERTY);
+            }
+            return false;
+            break;
+        case GAME:
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_GAME);
+            }
+            return false;
+            break;
+    }
+
+    return true;
+}
