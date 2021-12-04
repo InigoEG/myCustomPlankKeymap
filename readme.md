@@ -69,7 +69,7 @@
         Se habrá creado el directorio qmk_firmware
                 Pegar el keymap personalizado dentro de qmk_firmware\keyboards\planck\keymaps
 
-        Ejecutar comando
+        Ejecutar comando (posiciondose dentro del directorio qmk_firmware)
                 qmk compile -kb planck/rev6 -km myCustomPlankKeymap
 
         Activar modo DFU del teclado y ejecutar comando
