@@ -1,16 +1,16 @@
 #include QMK_KEYBOARD_H
 
 enum planck_layers {
-  _MOVE,
+  _QWERTY,
   _LOWER,
   _RAISE,
+  _MOVE,
   _ADJUST
 };
 
 enum planck_keycodes {
   TD_LSHIFT_CAPS = 1,
-  TD_RSHIFT_CAPS = 2,
-  QWERTY = 3
+  TD_RSHIFT_CAPS = 2
 };
 
 #define LOW_BSPC LT(_LOWER, KC_BSPC)
