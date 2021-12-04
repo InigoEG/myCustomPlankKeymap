@@ -60,8 +60,20 @@
         `------------------------------------------------------------------------------------'
 
 
+        Instar QMK cli software
+                https://github.com/qmk/qmk_distro_msys/releases/
 
+        Abrir y ejecutar comando
+                qmk setup
+        
+        Se habrá creado el directorio qmk_firmware
+                Pegar el keymap personalizado dentro de qmk_firmware\keyboards\planck\keymaps
 
+        Ejecutar comando
+                qmk compile -kb planck/rev6 -km myCustomPlankKeymap
+
+        Activar modo DFU del teclado y ejecutar comando
+                qmk flash -kb planck/rev6 -km myCustomPlankKeymap
 
 
 
