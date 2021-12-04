@@ -32,7 +32,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * |-------+------+------+------+------+------+------+------+------+------+------+-------|
     * | Shift |   Z  |   X  |   C  |   V  |   B  |   N  |   M  |  ,<  |  .>  |  /?  | Shift |
     * |-------+------+------+------+------+------+------+------+------+------+------+-------|
-    * | Move  |      | OS   | Alt  |Lower*|    Space    |Raise*| Alt  | Vol- | Vol+ | Move  |
+    * | Move  | Mute | OS   | Alt  |Lower*|    Space    |Raise*| Alt  | Vol- | Vol+ | Move  |
     * `-------------------------------------------------------------------------------------'
     * 
     * - Ctrl when held, Esc when tapped
